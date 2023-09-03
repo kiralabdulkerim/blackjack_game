@@ -1,0 +1,90 @@
+"""
+Created on Sun Sep  3 12:30:07 2023
+
+@author: abdulkerimkiral
+
+Project: BlackJack
+"""
+import random
+import os
+
+def cards():
+#Pick a random card
+   
+    Q=10
+    K=10
+    J=10
+    
+    choose = [2,3,4,5,6,7,8,9,10,J,K,Q,11]
+    
+    card = random.choice(choose)
+    return card
+
+def calculation(choose):
+# Calculate the score
+    if sum(choose) == 21 and len(choose) == 2:
+        return 0
+    
+    if 11 in choose and sum(choose) > 21:
+        choose.remove(11)
+        choose.append(1)
+        
+    return sum(choose)
+
+def comparison(score_of_user, score_of_computer):
+#Comparison of user's and computer's scores    
+    if score_of_user == score_of_computer:
+        return "DRAW"
+    elif score_of_computer == 0:
+        return "LOSE, Computer has BLACKJACK"
+    elif score_of_user == 0:
+        return "******WIN with BLACKJACK******"
+    elif score_of_computer > 21:
+        return "******WIN with Computer pass 21******"
+    elif score_of_user > 21:
+        return "LOSE with You pass 21"
+    elif score_of_user > score_of_computer:
+        return "******WIN******"
+    else:
+        return "LOSE"
+
+def playblackjack(): 
+
+    user = []
+    computer = []
+    game_over = False
+    
+    for i in range(2):
+    
+        user.append(cards())
+        computer.append(cards())
+        
+    while not game_over:
+        
+        score_of_user = calculation(user)
+        score_of_computer = calculation(computer)
+        
+        print(f"Your cards: {user} and Your score: {score_of_user}")
+        print(f"Computers first card: {computer[0]}")
+        
+        if score_of_user == 0 or score_of_computer == 0 or score_of_user > 21:
+            game_over = True
+        else:
+            user_deal = input("Do you want another card? 'y' or 'n'")
+            if user_deal == "y":
+                user.append(cards())
+            else:
+                game_over = True
+            
+    while score_of_computer != 0 and score_of_computer < 17:
+        
+        computer.append(cards())
+        score_of_computer = calculation(computer)
+    
+    print(f"Your final cards: {user} and Your final score: {score_of_user}")
+    print(f"Computer's final cards: {computer} and Computer's final score: {score_of_computer}")
+    print(comparison(score_of_user, score_of_computer))
+    
+while input("Play BlackJack? 'y' or 'n'") == "y":
+    os.system('cls') # Clear the history
+    playblackjack()
